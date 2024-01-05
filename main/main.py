@@ -20,12 +20,11 @@ class Main(tk.Tk):
         self.right_frame()
         self.is_file_opened = False
 
-    def check_file(self): # функція, яка перевіряє чи є вже якийсь відкритий файл
+    def check_file(self):  # функція, яка перевіряє чи є вже якийсь відкритий файл
         if self.is_file_opened == True:
             showwarning(title='A file is opened', message='The previous file will be closed')
             self.close_file()
         self.is_file_opened = False
-
 
     def create_new_file(self):
         try:
@@ -40,14 +39,17 @@ class Main(tk.Tk):
                 if name_file == ".txt":
                     showerror(message="Please, enter the name! >:(")
                 else:
-                    showinfo(message=f"Your file is saved as {name_file} in txt-type. You can open it whenever you want! (File -> Open file)")
+                    showinfo(
+                        message=f"Your file is saved as {name_file} in txt-type. You can open it whenever you want! (File -> Open file)")
 
-                    current_directory = os.getcwd() # Отримання поточної директорії
+                    current_directory = os.getcwd()  # Отримання поточної директорії
                     parent_directory = os.path.dirname(current_directory)  # Шлях до батьківської директорії
-                    new_directory = os.path.join(parent_directory, "saves") # Шлях до нової директорії в якій зберігаються лісти
-                    new_file_path = os.path.join(new_directory, f"{name_file}") # Шлях до нового файлу в новій директорії
+                    new_directory = os.path.join(parent_directory,
+                                                 "saves")  # Шлях до нової директорії в якій зберігаються лісти
+                    new_file_path = os.path.join(new_directory,
+                                                 f"{name_file}")  # Шлях до нового файлу в новій директорії
 
-                    with open(new_file_path, 'x') as new_file: # Створення нового файлу
+                    with open(new_file_path, 'x') as new_file:  # Створення нового файлу
                         new_file.write("[('Enter the task', 'Not done', 'Put the deadline (01.01.2024 or tomorrow)')]")
 
                     win_new_f.destroy()
@@ -65,7 +67,7 @@ class Main(tk.Tk):
         except Exception as error:
             showerror(title="Error", message=f"An {error} has occured :(")
 
-    def save_file(self): #Фукція для зберігання файлу, формат зберігання ліст - тапл
+    def save_file(self):  # Фукція для зберігання файлу, формат зберігання ліст - тапл
         all_values = []
         for item_id in self.table.get_children():
             item_values = self.table.item(item_id, 'values')
@@ -76,14 +78,14 @@ class Main(tk.Tk):
         with open(to_open_file, 'w', encoding='utf-8') as file:
             file.write(str(all_values))
 
-    def open_file(self): #функція, яка відкриває файл в прогармі
+    def open_file(self):  # функція, яка відкриває файл в прогармі
 
         self.check_file()
         current_directory = os.getcwd()
         parent_directory = os.path.dirname(current_directory)
         new_directory = os.path.join(parent_directory, "saves")
 
-        global to_open_file #тут потрібна бібліотека ast щоб файл міг читатися пайтоном
+        global to_open_file  # тут потрібна бібліотека ast щоб файл міг читатися пайтоном
         to_open_file = filedialog.askopenfilename(initialdir=f"{new_directory}")
         print(f'{to_open_file}')
 
@@ -109,14 +111,14 @@ class Main(tk.Tk):
 
         except Exception as error:
             showerror(title="Error", message=f"{error} has occurred :(")
-        else: #тут кнопки стають активними, щоб користувач міг мучатися з інтерфейсом
+        else:  # тут кнопки стають активними, щоб користувач міг мучатися з інтерфейсом
             self.btn1.config(state="normal")
             self.btn2.config(state="normal")
             self.btn3.config(state="normal")
             self.btn4.config(state="normal")
             self.btn5.config(state="normal")
 
-    def close_file(self): #функція яка достовляє задоволення та заставляє камінь випасти з душі
+    def close_file(self):  # функція яка достовляє задоволення та заставляє камінь випасти з душі
         self.is_file_opened = False
         self.table.destroy()
         self.btn1.config(state="disabled")
@@ -125,7 +127,7 @@ class Main(tk.Tk):
         self.btn4.config(state="disabled")
         self.btn5.config(state="disabled")
 
-    def add_task(self): # адська функція яка додає задачу
+    def add_task(self):  # адська функція яка додає задачу
         try:
             # Створюємо топ-рівень вікна для введення даних
             win_add_task = tk.Toplevel()
@@ -134,8 +136,7 @@ class Main(tk.Tk):
             win_add_task.geometry("250x250")
             win_add_task.resizable(False, False)
 
-
-            def add_task_to_table(): # Функція для додавання завдання до таблиці
+            def add_task_to_table():  # Функція для додавання завдання до таблиці
                 task_text = entry_task.get()
                 status_text = entry_status.get()
                 deadline_text = entry_deadline.get()
@@ -177,11 +178,11 @@ class Main(tk.Tk):
         except Exception as error:
             showerror(title="Error", message=f"An {error} has occurred :(")
 
-    def delete_task(self): #функція яка відправляє в стратосферу задачу
+    def delete_task(self):  # функція яка відправляє в стратосферу задачу
         self.table.delete([selected_item for selected_item in self.table.selection()])
         self.table.bind("<<TreeviewSelect>>", self.delete_task)
 
-    def add_or_edit_deadline(self): #зайва непотрібна ніким функція яка дає можливість змінити дедлайн
+    def add_or_edit_deadline(self):  # зайва непотрібна ніким функція яка дає можливість змінити дедлайн
         selected_item = self.table.selection()
         print(selected_item)
 
@@ -220,7 +221,7 @@ class Main(tk.Tk):
         submit = tk.Button(dead_win, text="Submit", command=deadline)
         submit.pack(anchor='center', expand=1)
 
-    def edit_task(self): # найкорисніша функція яка дає можливість змінити все і вся в задачі
+    def edit_task(self):  # найкорисніша функція яка дає можливість змінити все і вся в задачі
         selected_items = self.table.selection()
 
         # Перевірка, чи вибрано рядок
@@ -244,7 +245,8 @@ class Main(tk.Tk):
         label_status = tk.Label(win_for_edit, text="The status")
         label_status.pack(anchor='center', expand=1)
         combobox_status_var = tk.StringVar(value=item_data[1])
-        combobox_status = ttk.Combobox(win_for_edit, textvariable=combobox_status_var, values=["Done", "Not Done"], state='readonly')
+        combobox_status = ttk.Combobox(win_for_edit, textvariable=combobox_status_var, values=["Done", "Not Done"],
+                                       state='readonly')
         combobox_status.pack(anchor='center', expand=1)
 
         label_deadline = tk.Label(win_for_edit, text="The deadline")
@@ -276,18 +278,18 @@ class Main(tk.Tk):
         def close_the_win():
             help_win.destroy()
 
-        explain1 = tk.Label(help_win, text="This is the ToDoList program, which was created by junior python developer!\n"
-                                           "The main idea of this program is setting any tasks \n with opportunities to set status (done or not done) and deadlines. \n"
-                                           "The interface is easy to understand, so it should not cause any problems during the using this programe.\n"
-                                           "The programme uses txt-files, but the text inside of these files is organisely written with algorithms, \n"
-                                           "in order the program could read these files. So please don't change txt-files manually.",
+        explain1 = tk.Label(help_win,
+                            text="This is the ToDoList program, which was created by junior python developer!\n"
+                                 "The main idea of this program is setting any tasks \n with opportunities to set status (done or not done) and deadlines. \n"
+                                 "The interface is easy to understand, so it should not cause any problems during the using this programe.\n"
+                                 "The programme uses txt-files, but the text inside of these files is organisely written with algorithms, \n"
+                                 "in order the program could read these files. So please don't change txt-files manually.",
                             justify='left')
         explain1.pack(anchor="nw")
         close_button = ttk.Button(help_win, text="Understandable!", command=close_the_win)
         close_button.pack(anchor='s', expand=1)
 
-
-    def top_menu(self): # верхнє меню, яке дає можливість діяти з файлами
+    def top_menu(self):  # верхнє меню, яке дає можливість діяти з файлами
         top_menu = tk.Menu()
 
         file_menu = tk.Menu(tearoff=0)
@@ -299,7 +301,7 @@ class Main(tk.Tk):
         top_menu.add_cascade(label="File", menu=file_menu)
         self.config(menu=top_menu)
 
-    def right_frame(self): # фрейм, який вміщує в собі кнопки для взаємодіями з задачами
+    def right_frame(self):  # фрейм, який вміщує в собі кнопки для взаємодіями з задачами
         # Головний фрейм
         self.main_buttons = tk.Frame(relief="groove", borderwidth=2)
 
