@@ -1,4 +1,0 @@
-list_exp = [
-    {"list1": "123", "done": False, "deadline": None, "subtasks": [{"sub1.1": "1234", "done": True}, {"sub1.2": "1234", "done": False}]},
-    {"list2": "456", "done": True, "deadline": "01.01.2001", "subtasks": [{"sub2.1": "1234", "done": False}, {"sub2.2": "1234", "done": True}]}
-]
