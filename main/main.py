@@ -18,6 +18,14 @@ class Main(tk.Tk):
 
         self.top_menu()
         self.right_frame()
+        self.is_file_opened = False
+
+    def check_file(self): # функція, яка перевіряє чи є вже якийсь відкритий файл
+        if self.is_file_opened == True:
+            showwarning(title='A file is opened', message='The previous file will be closed')
+            self.close_file()
+        self.is_file_opened = False
+
 
     def create_new_file(self):
         try:
@@ -32,7 +40,7 @@ class Main(tk.Tk):
                 if name_file == ".txt":
                     showerror(message="Please, enter the name! >:(")
                 else:
-                    showinfo(message=f"Your file is saved as {name_file} in txt-type. You can open it whenever you want!")
+                    showinfo(message=f"Your file is saved as {name_file} in txt-type. You can open it whenever you want! (File -> Open file)")
 
                     current_directory = os.getcwd() # Отримання поточної директорії
                     parent_directory = os.path.dirname(current_directory)  # Шлях до батьківської директорії
@@ -40,7 +48,7 @@ class Main(tk.Tk):
                     new_file_path = os.path.join(new_directory, f"{name_file}") # Шлях до нового файлу в новій директорії
 
                     with open(new_file_path, 'x') as new_file: # Створення нового файлу
-                        new_file.write("[('Enter the task', 'Not done', 'Put the deadline')]")
+                        new_file.write("[('Enter the task', 'Not done', 'Put the deadline (01.01.2024 or tomorrow)')]")
 
                     win_new_f.destroy()
 
@@ -70,14 +78,20 @@ class Main(tk.Tk):
 
     def open_file(self): #функція, яка відкриває файл в прогармі
 
+        self.check_file()
         current_directory = os.getcwd()
         parent_directory = os.path.dirname(current_directory)
         new_directory = os.path.join(parent_directory, "saves")
 
         global to_open_file #тут потрібна бібліотека ast щоб файл міг читатися пайтоном
         to_open_file = filedialog.askopenfilename(initialdir=f"{new_directory}")
+        print(f'{to_open_file}')
+
+        if not to_open_file or to_open_file == "":
+            raise showerror(title="No file", message='The file was not chosen.')
 
         try:
+            self.is_file_opened = True
             with open(to_open_file, 'r', encoding='utf-8') as file:
                 datas = ast.literal_eval(file.read())
 
@@ -90,12 +104,11 @@ class Main(tk.Tk):
                 self.table.heading("Status", text="Status")
                 self.table.heading("Deadline", text="Deadline")
 
-                # добавляем данные
                 for data in datas:
                     self.table.insert("", END, values=data)
 
         except Exception as error:
-            showerror(title="Error", message=f"An {error} has occurred :(")
+            showerror(title="Error", message=f"{error} has occurred :(")
         else: #тут кнопки стають активними, щоб користувач міг мучатися з інтерфейсом
             self.btn1.config(state="normal")
             self.btn2.config(state="normal")
@@ -104,6 +117,7 @@ class Main(tk.Tk):
             self.btn5.config(state="normal")
 
     def close_file(self): #функція яка достовляє задоволення та заставляє камінь випасти з душі
+        self.is_file_opened = False
         self.table.destroy()
         self.btn1.config(state="disabled")
         self.btn2.config(state="disabled")
@@ -255,7 +269,7 @@ class Main(tk.Tk):
     def help_with_program(self):
         help_win = tk.Toplevel()
         help_win.title("Help center")
-        help_win.geometry("410x150")
+        help_win.geometry("600x170")
         help_win.grab_set()
         help_win.resizable(False, False)
 
@@ -263,8 +277,11 @@ class Main(tk.Tk):
             help_win.destroy()
 
         explain1 = tk.Label(help_win, text="This is the ToDoList program, which was created by junior python developer!\n"
-                                           "The main idea of this program is setting any task \n with opportunities to set status (done or not done) and deadlines. \n"
-                                           "The interface is easy to understand, \n so it should not cause any problems during the using this programe.\n")
+                                           "The main idea of this program is setting any tasks \n with opportunities to set status (done or not done) and deadlines. \n"
+                                           "The interface is easy to understand, so it should not cause any problems during the using this programe.\n"
+                                           "The programme uses txt-files, but the text inside of these files is organisely written with algorithms, \n"
+                                           "in order the program could read these files. So please don't change txt-files manually.",
+                            justify='left')
         explain1.pack(anchor="nw")
         close_button = ttk.Button(help_win, text="Understandable!", command=close_the_win)
         close_button.pack(anchor='s', expand=1)
