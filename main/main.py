@@ -276,11 +276,13 @@ class Main(tk.Tk):
         def close_the_win():
             help_win.destroy()
 
-        explain1 = tk.Label(help_win, text="This is the ToDoList program, which was created by junior python developer!\n"
-                                           "The main idea of this program is setting any tasks \n with opportunities to set status (done or not done) and deadlines. \n"
-                                           "The interface is easy to understand, so it should not cause any problems during the using this programe.\n"
-                                           "The programme uses txt-files, but the text inside of these files is organisely written with algorithms, \n"
-                                           "in order the program could read these files. So please don't change txt-files manually.",
+        explain1 = tk.Label(help_win,
+                            text="This is the ToDoList program, which was created by junior python developer!\n"
+                                 "The main idea of this program is setting any tasks \n with opportunities to set status (done or not done) and deadlines. \n"
+                                 "The interface is easy to understand, so it should not cause any problems during the using this programe.\n"
+                                 "The buttons, which give opportunities to act with list, are available, when a file is opened.\n"
+                                 "The programme uses txt-files, but the text inside of these files is organisely written with algorithms, \n"
+                                 "in order the program could read these files. So please don't change txt-files manually.\n",
                             justify='left')
         explain1.pack(anchor="nw")
         close_button = ttk.Button(help_win, text="Understandable!", command=close_the_win)
