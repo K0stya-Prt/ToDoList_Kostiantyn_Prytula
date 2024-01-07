@@ -13,9 +13,8 @@ class Main(tk.Tk):
 
         self.title("ToDoList")
         self.geometry("1000x700")
-        self.config(bg='#999999')
+        # self.config(bg='#999999')
         self.resizable(False, False)
-
         self.top_menu()
         self.right_frame()
 
@@ -255,16 +254,20 @@ class Main(tk.Tk):
     def help_with_program(self):
         help_win = tk.Toplevel()
         help_win.title("Help center")
-        help_win.geometry("410x150")
+        help_win.geometry("555x150")
         help_win.grab_set()
-        help_win.resizable(False, False)
 
         def close_the_win():
             help_win.destroy()
 
-        explain1 = tk.Label(help_win, text="This is the ToDoList program, which was created by junior python developer!\n"
-                                           "The main idea of this program is setting any task \n with opportunities to set status (done or not done) and deadlines. \n"
-                                           "The interface is easy to understand, \n so it should not cause any problems during the using this programe.\n")
+        explain1 = tk.Label(help_win,
+                            text="This is the ToDoList program, which was created by junior python developer!\n"
+                                 "The main idea of this program is setting any tasks \n with opportunities to set status (done or not done) and deadlines. \n"
+                                 "The interface is easy to understand, so it should not cause any problems during the using this programe.\n"
+                                 "The buttons, which give opportunities to act with list, are available, when a file is opened.\n"
+                                 "The programme uses txt-files, but the text inside of these files is organisely written with algorithms, \n"
+                                 "in order the program could read these files. So please don't change txt-files manually.\n",
+                            justify='left')
         explain1.pack(anchor="nw")
         close_button = ttk.Button(help_win, text="Understandable!", command=close_the_win)
         close_button.pack(anchor='s', expand=1)
@@ -304,7 +307,7 @@ class Main(tk.Tk):
         self.btn5 = tk.Button(self.main_buttons, text="Help | Допомога", command=self.help_with_program)
         self.btn5.pack(fill="x", anchor="s", expand=1)
 
-        self.main_buttons.config(bg='#999999')  # Фон фрейму
+        # self.main_buttons.config(bg='#999999')  # Фон фрейму
         self.main_buttons.pack(side="left", fill="y")  # Розташування головного фрейму
 
 
